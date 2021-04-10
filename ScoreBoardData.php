@@ -10,6 +10,8 @@ final class ScoreBoardData {
 	private string $title;
 	private bool $contentNeedUpdate;
 	private bool $titleNeedUpdate;
+	/** @var callable[] */
+	private array $whenTick = [];
 
 	/**
 	 * @param ScoreTag[] $tags
@@ -25,6 +27,16 @@ final class ScoreBoardData {
 		$this->contentNeedUpdate = false;
 	}
 
+	public function onTick() : void {
+		foreach ($this->whenTick as $cal) {
+			$cal();
+		}
+	}
+
+	public function whenTick(callable $call) : void {
+		$this->whenTick[] = $call;
+	}
+
 	public function contentNeedUpdate() : bool {
 		return $this->contentNeedUpdate;
 	}
@@ -33,9 +45,6 @@ final class ScoreBoardData {
 		return $this->titleNeedUpdate;
 	}
 
-	/**
-	 * @return ScoreTag[]
-	 */
 	public function getTags() : array {
 		return $this->tags;
 	}
@@ -47,6 +56,11 @@ final class ScoreBoardData {
 
 	public function triggerContentUpdate() : void {
 		$this->contentNeedUpdate = true;
+	}
+
+	public function updateTag(int $line, string $content) : void {
+		$this->tags[$line]->update($content);
+		$this->triggerContentUpdate();
 	}
 
 	public function getTitle() : string {

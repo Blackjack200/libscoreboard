@@ -6,15 +6,12 @@ namespace libscoreboard;
 
 class ScoreTag {
 	protected string $value;
-	protected ScoreBoardData $data;
 
-	public function __construct(string $value, ScoreBoardData $data) {
+	public function __construct(string $value) {
 		$this->value = $value;
-		$this->data = $data;
 	}
 
 	public function update(string $value) : void {
-		$this->data->triggerContentUpdate();
 		$this->value = $value;
 	}
 

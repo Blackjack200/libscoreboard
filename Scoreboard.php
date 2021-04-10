@@ -44,6 +44,7 @@ class Scoreboard {
 
 	public function display(Player $player) : void {
 		$data = $this->getData($player);
+		$data->onTick();
 		if ($data->titleNeedUpdate()) {
 			$pk = new SetDisplayObjectivePacket();
 			$pk->displaySlot = 'sidebar';
